@@ -1,6 +1,8 @@
-# gal_app
+# Gallery App
 
-A new Flutter project.
+Flutter Project that access Camera and Storage once you use the camera to take pictures it will display the image to the flutter app and saves the image also to device gallery app
+
+## NOTE THIS ONLY WORKS ON ANDROID SINCE I HAVEN'T ADDED THE FEATURE FOR THE IOS 
 
 ## Getting Started
 
