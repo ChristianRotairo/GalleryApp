@@ -1,6 +1,7 @@
+// lib/main.dart
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:gal_app/features/gallery/presentation/pages/provider/camera_provider.dart';
 import 'package:provider/provider.dart';
 import 'features/gallery/data/repositories/image_repository.dart';
 import 'features/gallery/domain/usecases/capture_image.dart';
@@ -8,7 +9,9 @@ import 'features/gallery/presentation/pages/camera/camera_page.dart';
 import 'features/gallery/presentation/pages/calendar/calendar_page.dart';
 import 'features/gallery/presentation/pages/gallery/gallery_page.dart';
 import 'features/gallery/presentation/pages/home/homepage.dart';
+import 'features/gallery/presentation/pages/provider/camera_provider.dart';
 import 'features/utilities/colors.dart';
+import 'splash_screen.dart';  // Import the SplashScreen
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,49 +26,47 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          iconTheme: IconThemeData(
-            color: Colors.white,
-          ),
-          titleTextStyle: TextStyle(
-            fontSize: 20,
-            color: Colors.white,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => CameraProvider(
+            CaptureImage(ImageRepository()),
+            (message) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(message)),
+              );
+            },
           ),
         ),
-      ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => CameraProvider(
-              CaptureImage(ImageRepository()),
-              (message) {
-                // This function will be called to show snackbars
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(message)),
-                );
-              },
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            iconTheme: IconThemeData(
+              color: Colors.white,
+            ),
+            titleTextStyle: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
             ),
           ),
-        ],
-        child: NavigationBar(cameras: cameras),
+        ),
+        home: SplashScreen(cameras: cameras),
       ),
     );
   }
 }
 
-
-class NavigationBar extends StatefulWidget {
+class NavBar extends StatefulWidget {
   final List<CameraDescription> cameras;
-  const NavigationBar({super.key, required this.cameras});
+  const NavBar({super.key, required this.cameras});
 
   @override
-  _NavigationBarState createState() => _NavigationBarState();
+  _NavBState createState() => _NavBState();
 }
 
-class _NavigationBarState extends State<NavigationBar> {
+class _NavBState extends State<NavBar> {
   int _selectedIndex = 0;
   late final List<Widget> _pages;
 
@@ -73,9 +74,9 @@ class _NavigationBarState extends State<NavigationBar> {
   void initState() {
     super.initState();
     _pages = [
-      HomePage(),
-      GalleryPage(),
-      CalendarPage(),
+      const HomePage(),
+      const GalleryPage(),
+      const CalendarPage(),
       CamPage(cameras: widget.cameras),
     ];
   }
