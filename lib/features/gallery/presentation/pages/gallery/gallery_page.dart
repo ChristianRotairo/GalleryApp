@@ -8,14 +8,13 @@ class GalleryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-            child: Text(
+        title: Text(
           "Gallery",
          style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
-        )),
+        ),
         backgroundColor: backgroundColor,
       ),
       backgroundColor: const Color.fromRGBO(33, 17, 52, 1),
