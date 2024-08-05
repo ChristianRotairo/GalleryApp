@@ -27,7 +27,8 @@ class GalleryPage extends StatelessWidget {
               child: Text(
             "No Images to Display",
             style: TextStyle(
-              color: Colors.white,
+              fontSize: 16,
+              color: Color.fromARGB(255, 99, 99, 99),
               fontWeight: FontWeight.bold,
             ),
           )),
